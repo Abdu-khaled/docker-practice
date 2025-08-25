@@ -345,3 +345,49 @@ alpine sh
 ![](./screenshot/15.png)
 
 
+# Task: Dockerfile
+
+## 1. Containerized the following App
+
+### 1.1. Create Docker file for the app
+
+```Dockerfile
+## Use node:20 as the base image
+FROM node:20
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files 
+COPY package*.json ./
+
+# Install aLL dependencies 
+RUN npm install
+
+# Copy the rest of the source
+COPY . .
+
+# Build the app
+RUN npm run build
+
+# Expose port 3000
+EXPOSE 3000
+
+# Start the app
+CMD ["npm", "run", "start"]
+```
+
+### 1.2. Build Container from Dockerfile and run container 
+
+`Command`
+```bash
+docker build -t ts-api-demo:v1 .
+docker run -d --rm -p 3000:3000 ts-api-demo:v1
+```
+`Result`
+![](./screenshot/16.png)
+
+### 1.3. Test it 
+
+`Result`
+![](./screenshot/17.png)
