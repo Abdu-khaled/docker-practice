@@ -219,3 +219,41 @@ ping -c 4 172.17.0.2
  - They can reach each other using IPs.
 
 
+## Part 3: Port Forwarding
+
+### 3.1. Run an Nginx container with port forwarding
+
+`Command`
+```bash
+docker run -d --name nginx-container -p 8080:80 nginx 
+```
+
+`Output`
+![](./screenshot/07.png)
+
+### 3.2. Access the container from the browser or using `curl`
+
+`Command`
+```bash
+curl localhost:8080 
+```
+`Output`
+![](./screenshot/08.png)
+![](./screenshot/09.png)
+
+
+
+### 3.3. Try running a second Nginx container with the same port mapping. What happens? Why?
+
+`Result`: This will fail with an error like
+
+![](./screenshot/10.png)
+
+`Why?`
+
+ - Docker maps host port → container port.
+
+ - Host port 8080 is already taken by nginx-container.
+
+ - You can’t bind two containers to the same host port at the same time.
+
