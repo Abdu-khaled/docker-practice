@@ -163,3 +163,59 @@ docker save -o backup.tar nginx
     - History
     - Configuration
     - OS & Architecture
+  
+## Part 2: Networking and Bridge Mode
+
+
+### 2.1. Run two containers without specifying a network:
+
+`Command`
+```bash
+docker run -dit --name container1 ubuntu infinity
+docker run -dit --name container2 ubuntu infinity
+```
+`Output`
+![](./screenshot/03.png)
+
+### 2.2. Try to ping `container1` from `container2`:
+
+- What happens? Why?
+
+`Command`
+```bash
+docker exec -it container2 bash
+ping container1
+```
+`Output`
+![](./screenshot/04.png)
+
+`Result:` This will fail.
+
+`Why:` Because the default bridge network does not have automatic DNS-base container name resolution.
+
+
+### 2.3. Inspect the `docker0` bridge network and check container IPs
+
+`Command`
+```bash
+docker network inspect bridge
+```
+`Output`
+![](./screenshot/05.png)
+
+### 2.4. Now try pinging `container1` from `container2` using IP address.
+
+`Command`
+```bash
+docker exec -it container2 bash
+ping -c 4 172.17.0.2
+```
+
+`Result:` This works, because:
+![](./screenshot/06.png)
+
+ - Both containers are on the same bridge network.
+
+ - They can reach each other using IPs.
+
+
