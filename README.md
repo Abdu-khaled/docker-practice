@@ -262,9 +262,86 @@ curl localhost:8080
 
 ## Part 1 – Basic Dockerfile
 
-1. Create a directory named `docker_task`.
-2. Inside it, create a file named `Dockerfile` that:
+### 1.1. Create a directory named `docker_task`.
+### 1.2. Inside it, create a file named `Dockerfile` that:
    - Uses **`alpine`** as the base image.
    - Installs `curl`
    - Runs `cat hello from container` when the container starts.
-3. Build the image and tag it as `my-basic-image:v1`.
+
+```Dockerfile
+# Use alpine as the base image
+FROM alpine
+
+# Install curl
+RUN apk add --no-cache curl
+
+# Command to run when container starts
+CMD [ "echo", "hello from container" ]
+```
+
+### 1.3. Build the image and tag it as `my-basic-image:v1`.
+
+`Command`
+```bash
+docker build -t my-basic-image:v1
+docker run --rm my-basic-image:v1
+```
+`Output`
+![](./screenshot/11.png)
+
+## Part 2 – Volumes
+
+### 2.1. Bind Mount
+
+- Create a local directory `data_bind` and put a file `bind_note.txt` inside it.
+- Run the container so that `/app/data` inside the container is linked to `data_bind` on your local machine.
+- Verify that changes in the container are reflected locally.
+
+`Result:`
+![](./screenshot/12.png)
+
+
+
+### 2.2. Named Volume
+
+#### Create a named volume called `my_named_volume`.
+
+`Command`
+```bash
+docker volume create my_named_volume
+docker volume ls
+```
+
+`Result:`
+![](./screenshot/13.png)
+
+
+#### Run the container using this named volume mounted at `/app/named`.
+
+`Command`
+```bash
+docker run -it --name named-test \
+-v my_named_volume:/app/named \
+alpine sh
+```
+
+#### Create a file inside `/app/named` from inside the container 
+
+
+`Result:`
+![](./screenshot/14.png)
+
+
+#### check it persists after container deletion
+
+`Command`
+```bash
+docker run -it --name named-test2 \
+-v my_named_volume:/app/named \
+alpine sh
+```
+
+`Result:`
+![](./screenshot/15.png)
+
+
