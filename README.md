@@ -258,3 +258,13 @@ curl localhost:8080
  - You can’t bind two containers to the same host port at the same time.
 
 
+# Task: Docker Volums
+
+## Part 1 – Basic Dockerfile
+
+1. Create a directory named `docker_task`.
+2. Inside it, create a file named `Dockerfile` that:
+   - Uses **`alpine`** as the base image.
+   - Installs `curl`
+   - Runs `cat hello from container` when the container starts.
+3. Build the image and tag it as `my-basic-image:v1`.
